@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCS Waste Digital Track</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --card:#ffffff;
+      --text:#18212f;
+      --muted:#6b7788;
+      --line:#d9e1ec;
+      --primary:#2563eb;
+      --primary-soft:#eff5ff;
+      --accent:#0f766e;
+      --danger:#dc2626;
+      --chip:#eef3f8;
+      --shadow:0 14px 34px rgba(15,23,42,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,"Segoe UI",Tahoma,sans-serif;
+      background:linear-gradient(180deg,#f7f9fc 0%, #eef3f8 100%);
+      color:var(--text);
+    }
+    .app{max-width:1100px;margin:0 auto;padding:18px}
+    .hero{
+      background:linear-gradient(135deg,#ffffff,#f4f8ff);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      margin-bottom:16px;
+    }
+    .hero h1{margin:0 0 8px;font-size:30px}
+    .hero p{margin:0;color:var(--muted);line-height:1.65}
+    .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 16px}
+    .tab-btn{
+      border:none;border-radius:16px;padding:13px 14px;font-weight:800;cursor:pointer;
+      background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);color:#334155
+    }
+    .tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .page{display:none}
+    .page.active{display:block}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
+      margin-bottom:14px;
+    }
+    .title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .title h2{margin:0;font-size:18px}
+    .sub{color:var(--muted);font-size:13px}
+    .grid-2,.grid-3,.grid-4{
+      display:grid;gap:12px;
+    }
+    .grid-2{grid-template-columns:repeat(2,1fr)}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field label{font-size:13px;font-weight:700;color:#314052}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;
+      padding:12px 13px;font-size:15px;color:var(--text);outline:none;
+    }
+    textarea{min-height:82px;resize:vertical}
+    .hint{
+      font-size:13px;line-height:1.7;color:#49566a;background:#f8fbff;border:1px solid #dbe8ff;
+      padding:12px 14px;border-radius:16px
+    }
+    .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .sum-box{
+      background:#f9fbff;border:1px solid var(--line);border-radius:18px;padding:14px
+    }
+    .sum-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+    .sum-value{font-size:24px;font-weight:800}
+    .item{
+      border:1px solid var(--line);border-radius:20px;padding:14px;background:#fbfdff;
+      margin-bottom:12px;
+    }
+    .item-head{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px
+    }
+    .row{display:flex;align-items:center;gap:10px}
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;
+      border-radius:999px;background:var(--primary-soft);color:var(--primary);font-weight:800;
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;
+      background:var(--chip);font-size:12px;color:#344256;font-weight:700;
+    }
+    .btn{border:none;border-radius:14px;padding:12px 14px;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-light{background:#eef4ff;color:#234}
+    .btn-danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+    .btn-full{width:100%}
+    .preview{display:none;width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:10px;border:1px solid var(--line)}
+    .list{display:grid;gap:10px}
+    .list-row{padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+    .list-row strong{display:block;margin-bottom:4px;font-size:15px}
+    .muted{color:var(--muted);font-size:13px;line-height:1.6}
+    .sticky{position:sticky;bottom:10px}
+    .actions{
+      display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;background:rgba(255,255,255,.92);
+      backdrop-filter:blur(10px);padding:10px;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)
+    }
+    .toolbar{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px}
+    .history-table{width:100%;border-collapse:collapse}
+    .history-table th,.history-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;vertical-align:top}
+    .history-table th{font-size:13px;color:#4b5a6d;background:#f8fbff}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:12px;font-weight:700}
+    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .chart-box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}
+    .chart-box h3{margin:0 0 8px;font-size:16px}
+    canvas{width:100%;height:280px;background:#fcfdff;border-radius:14px}
+    .empty{padding:18px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);text-align:center}
+    @media (max-width:900px){
+      .grid-2,.grid-3,.grid-4,.summary,.actions,.tabs,.toolbar,.dash-grid{grid-template-columns:1fr}
+      .hero h1{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hero">
+      <h1 id="appTitle">TCS Waste Tracker</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchPage('capture', this)">บันทึกข้อมูล</button>
+      <button class="tab-btn" onclick="switchPage('history', this)">รายการย้อนหลัง</button>
+      <button class="tab-btn" onclick="switchPage('dashboard', this)">Dashboard</button>
+    </div>
+
+    <div id="capturePage" class="page active">
+      <div class="card">
+        <div class="title">
+          <h2>ข้อมูลเอกสาร</h2>
+          <div class="sub">Simple + Modern</div>
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label>วันที่</label>
+            <input type="date" id="reportDate">
+          </div>
+          <div class="field">
+            <label>หน่วยงานผู้บันทึก</label>
+            <select id="recorderDept" onchange="onRecorderDeptChange()">
+              <option value="">-- เลือกหน่วยงาน --</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ชื่อผู้บันทึก</label>
+            <select id="recorder">
+              <option value="">-- เลือกหน่วยงานก่อน --</option>
+            </select>
+          </div>
+        </div>
+        <div class="hint">
+          1) เลือก <b>หน่วยงานผู้บันทึก</b> ก่อน แล้วชื่อผู้บันทึกจะเปลี่ยนตามหลักเดียวกับ <b>แผนก/หน่วยงาน → เครื่อง/กลุ่มงาน</b><br>
+          2) เลือก <b>กะ A / B / C</b> ในแต่ละรายการ Waste<br>
+          3) ในแต่ละรายการมี <b>ประเภทกระบะ/รถ</b> เพื่อให้ระบบหักน้ำหนักอัตโนมัติก่อนส่งเข้าระบบ
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="title">
+          <h2>สรุป</h2>
+          <div class="sub">Live Net Weight</div>
+        </div>
+        <div class="summary">
+          <div class="sum-box"><div class="sum-label">Gross รวม</div><div class="sum-value" id="sumGross">0.00</div></div>
+          <div class="sum-box"><div class="sum-label">หักกระบะรวม</div><div class="sum-value" id="sumTare">0.00</div></div>
+          <div class="sum-box"><div class="sum-label">Net รวม</div><div class="sum-value" id="sumNet">0.00</div></div>
+          <div class="sum-box"><div class="sum-label">จำนวนรายการ</div><div class="sum-value" id="sumCount">0</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="title">
+          <h2>รายการ Waste</h2>
+          <div class="sub">เพิ่มได้หลายรายการ</div>
+        </div>
+        <div id="items"></div>
+        <button class="btn btn-light btn-full" type="button" onclick="addItem()">+ เพิ่มรายการ</button>
+      </div>
+
+      <div class="card">
+        <div class="title">
+          <h2>รายการที่กรอก</h2>
+          <div class="sub">Preview</div>
+        </div>
+        <div class="list" id="reportList">
+          <div class="list-row">ยังไม่มีข้อมูล</div>
+        </div>
+      </div>
+
+      <div class="sticky">
+        <div class="actions">
+          <button class="btn btn-light" onclick="buildReport()">อัปเดตรายการ</button>
+          <button class="btn btn-light" onclick="resetForm()">ล้างข้อมูล</button>
+          <button class="btn btn-primary" onclick="submitForm()">บันทึก</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="historyPage" class="page">
+      <div class="card">
+        <div class="title">
+          <h2>รายการย้อนหลัง</h2>
+          <div class="sub">เลือกช่วงวันได้</div>
+        </div>
+        <div class="toolbar">
+          <div class="field">
+            <label>ค้นหา</label>
+            <input id="historySearch" type="text" placeholder="ค้นหา หน่วยงาน / ผู้บันทึก / หัวข้อ" oninput="renderHistory()">
+          </div>
+          <div class="field">
+            <label>เริ่มวันที่</label>
+            <input id="historyStart" type="date" onchange="renderHistory(); renderDashboard();">
+          </div>
+          <div class="field">
+            <label>ถึงวันที่</label>
+            <input id="historyEnd" type="date" onchange="renderHistory(); renderDashboard();">
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <button class="btn btn-light" onclick="clearHistoryFilter()">ล้างตัวกรอง</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="title">
+          <h2>เอกสารที่บันทึกไว้</h2>
+          <div class="sub" id="historyCountLabel">0 รายการ</div>
+        </div>
+        <div id="historyWrap"></div>
+      </div>
+    </div>
+
+    <div id="dashboardPage" class="page">
+      <div class="card">
+        <div class="title">
+          <h2>Dashboard</h2>
+          <div class="sub">สรุปตามช่วงวันที่เลือกในหน้ารายการย้อนหลัง</div>
+        </div>
+        <div class="summary">
+          <div class="sum-box"><div class="sum-label">จำนวนเอกสาร</div><div class="sum-value" id="dashDocs">0</div></div>
+          <div class="sum-box"><div class="sum-label">จำนวนรายการ Waste</div><div class="sum-value" id="dashItems">0</div></div>
+          <div class="sum-box"><div class="sum-label">Net รวม</div><div class="sum-value" id="dashNet">0.00</div></div>
+          <div class="sum-box"><div class="sum-label">Gross รวม</div><div class="sum-value" id="dashGross">0.00</div></div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="chart-box">
+          <h3>Net Weight ตามหน่วยงาน</h3>
+          <canvas id="deptChart" width="520" height="280"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Net Weight ตามกะ</h3>
+          <canvas id="shiftChart" width="520" height="280"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Top หัวข้อปัญหา Waste</h3>
+          <canvas id="issueChart" width="520" height="280"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Net Weight รายวัน</h3>
+          <canvas id="dateChart" width="520" height="280"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const structure = {
+  "ผ.ผลิตแผ่นลูกฟูก": {
+    machines: ["ผ.ผลิตแผ่นลูกฟูก"],
+    issues: [
+      "1. กระดาษกรีด",
+      "2. แผ่นเสียดีเฟล็คเตอร์",
+      "3. แผ่นเสียท้ายเครื่อง",
+      "4. แผ่นเสียลูกฟูกคืนจากหน่วยงานอื่น",
+      "5. แผ่นเหลือจากจำนวนเผื่อ",
+      "6. สินค้าคืนจาก ผ.ลูกฟูก",
+      "7. Claim SKIC - 7.1 ผ.พิมพ์ / 7.2 ลูกฟูก"
+    ]
+  },
+  "พิมพ์และสำเร็จรูป": {
+    machines: ["F100", "F84FC", "Dongfang", "F240BT", "4FG84Evol", "งานซอย/ไส้", "เครื่องพิมพ์และสรร."],
+    issues: [
+      "8. พิมพ์เสีย F100",
+      "9. พิมพ์เสีย F84FC",
+      "10. พิมพ์เสีย Dongfang",
+      "11. พิมพ์เสีย F240BT",
+      "12. พิมพ์เสีย 4FG84Evol",
+      "13. เศษตัดจากแผ่นดี",
+      "13.1 เศษตัดจากกระดาษแก้งาน Replan",
+      "13.2 เศษตัดจาก S/B วางแผนออกให้ซอย",
+      "14. เศษตัดจากแผ่นเสีย",
+      "14.1 เศษตัดแผ่นเสียที่เกิดจากวางแผนผิด",
+      "14.2 เศษตัดแผ่นเสียที่เกิดจากลูกฟูกออกผิด",
+      "15. กล่องและแผ่นเสียจากสรร."
+    ]
+  },
+  "เครื่องและสรร.": {
+    machines: ["เครื่องและสรร."],
+    issues: [
+      "16. แผ่นเผื่อ",
+      "16.1 S/B เผื่องาน RSC",
+      "16.2 กล่องเผื่องานสำเร็จรูป",
+      "17. สินค้าคืนจากพ.พิมพ์"
+    ]
+  },
+  "ส่วนขาย": {
+    machines: ["ส่วนขาย"],
+    issues: [
+      "18. กล่องและแผ่นเสียจากจัดส่ง",
+      "19. กล่องและแผ่นเสียจากวางแผน",
+      "20. กล่องและแผ่นเสียจากกล่องตัวอย่าง",
+      "21. กล่องและแผ่นเสียจากขาย",
+      "22. สินค้าคืนจากส่วนขาย"
+    ]
+  },
+  "อื่น ๆ": {
+    machines: ["อื่น ๆ"],
+    issues: ["23. กล่องและแผ่นทดสอบจาก QA"]
+  }
+};
+
+const TARE_OPTIONS = [
+  { label: "ไม่มีกระบะ / ไม่หัก", weight: 0 },
+  { label: "กะบะลูกฟูก - 75 kg", weight: 75 },
+  { label: "กะบะพลาสติก - 30 kg", weight: 30 },
+  { label: "กะบะ Loscam - 35 kg", weight: 35 },
+  { label: "รถ Waste - กำหนดเอง", weight: null }
+];
+
+const STORAGE_KEY = 'tcs_waste_records_v1';
+
+function options(arr, placeholder){
+  return `<option value="">${placeholder}</option>` + arr.map(v => `<option value="${v}">${v}</option>`).join('');
+}
+
+function tareOptions(){
+  return '<option value="">-- เลือกประเภทกระบะ --</option>' + TARE_OPTIONS.map(x => `<option value="${x.label}">${x.label}</option>`).join('');
+}
+
+function initHeader(){
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('reportDate').value = today;
+  document.getElementById('historyStart').value = today;
+  document.getElementById('historyEnd').value = today;
+  const deptSelect = document.getElementById('recorderDept');
+  deptSelect.innerHTML = options(Object.keys(structure), '-- เลือกหน่วยงาน --');
+}
+
+function switchPage(page, btn){
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+  document.getElementById(page + 'Page').classList.add('active');
+  btn.classList.add('active');
+  if(page === 'history') renderHistory();
+  if(page === 'dashboard') renderDashboard();
+}
+
+function onRecorderDeptChange(){
+  const dept = document.getElementById('recorderDept').value;
+  const recorder = document.getElementById('recorder');
+  if(!dept || !structure[dept]){
+    recorder.innerHTML = '<option value="">-- เลือกหน่วยงานก่อน --</option>';
+    return;
+  }
+  recorder.innerHTML = options(structure[dept].machines, '-- เลือกชื่อผู้บันทึก --');
+}
+
+function addItem(){
+  const container = document.getElementById('items');
+  const index = container.children.length + 1;
+  const el = document.createElement('div');
+  el.className = 'item';
+  el.innerHTML = `
+    <div class="item-head">
+      <div class="row"><div class="badge">${index}</div><strong>รายการ Waste</strong></div>
+      <button class="btn btn-danger" type="button" onclick="removeItem(this)">ลบ</button>
+    </div>
+
+    <div class="grid-4">
+      <div class="field">
+        <label>กะ</label>
+        <select class="shift">
+          <option value="">-- เลือกกะ --</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>แผนก/หน่วยงาน</label>
+        <select class="department" onchange="onDepartmentChange(this)">
+          ${options(Object.keys(structure), '-- เลือกแผนก/หน่วยงาน --')}
+        </select>
+      </div>
+      <div class="field">
+        <label>เครื่อง/กลุ่มงาน</label>
+        <select class="machine" onchange="onMachineChange(this)">
+          <option value="">-- เลือกแผนกก่อน --</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>หัวข้อปัญหา Waste</label>
+        <select class="issue">
+          <option value="">-- เลือกแผนกก่อน --</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-4">
+      <div class="field">
+        <label>น้ำหนักชั่ง (Gross kg)</label>
+        <input class="gross" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateCard(this)">
+      </div>
+      <div class="field">
+        <label>ประเภทกระบะ/รถ</label>
+        <select class="tareType" onchange="onTareTypeChange(this)">
+          ${tareOptions()}
+        </select>
+      </div>
+      <div class="field">
+        <label>น้ำหนักกระบะ (kg)</label>
+        <input class="tareWeight" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateCard(this)">
+      </div>
+      <div class="field">
+        <label>น้ำหนักสุทธิ (Net kg)</label>
+        <input class="net" type="number" step="0.01" min="0" placeholder="0.00" readonly>
+      </div>
+    </div>
+
+    <div class="row" style="margin:2px 0 12px;flex-wrap:wrap">
+      <span class="chip">Gross - กระบะ = Net</span>
+    </div>
+
+    <div class="field">
+      <label>รูปภาพ</label>
+      <input type="file" accept="image/*" capture="environment" onchange="previewImage(this)">
+      <img class="preview" alt="preview">
+    </div>
+
+    <div class="field">
+      <label>หมายเหตุ</label>
+      <textarea class="remark" placeholder="รายละเอียดเพิ่มเติม"></textarea>
+    </div>
+  `;
+  container.appendChild(el);
+  renumberItems();
+}
+
+function onDepartmentChange(select){
+  const card = select.closest('.item');
+  const machine = card.querySelector('.machine');
+  const issue = card.querySelector('.issue');
+  const dept = select.value;
+  if(!dept || !structure[dept]){
+    machine.innerHTML = '<option value="">-- เลือกแผนกก่อน --</option>';
+    issue.innerHTML = '<option value="">-- เลือกแผนกก่อน --</option>';
+    return;
+  }
+  machine.innerHTML = options(structure[dept].machines, '-- เลือกเครื่อง/กลุ่มงาน --');
+  issue.innerHTML = options(structure[dept].issues, '-- เลือกหัวข้อปัญหา --');
+}
+
+function onMachineChange(select){
+  const card = select.closest('.item');
+  const dept = card.querySelector('.department').value;
+  const issue = card.querySelector('.issue');
+  if(!dept || !structure[dept]) return;
+
+  let filtered = [...structure[dept].issues];
+  const machine = select.value;
+  if(machine === 'F100') filtered = filtered.filter(x => x.startsWith('8.') || !/^9\.|^10\.|^11\.|^12\./.test(x));
+  if(machine === 'F84FC') filtered = filtered.filter(x => x.startsWith('9.') || !/^8\.|^10\.|^11\.|^12\./.test(x));
+  if(machine === 'Dongfang') filtered = filtered.filter(x => x.startsWith('10.') || !/^8\.|^9\.|^11\.|^12\./.test(x));
+  if(machine === 'F240BT') filtered = filtered.filter(x => x.startsWith('11.') || !/^8\.|^9\.|^10\.|^12\./.test(x));
+  if(machine === '4FG84Evol') filtered = filtered.filter(x => x.startsWith('12.') || !/^8\.|^9\.|^10\.|^11\./.test(x));
+  if(machine === 'งานซอย/ไส้') filtered = filtered.filter(x => /^13\.|^14\.|^15\./.test(x));
+
+  issue.innerHTML = options(filtered, '-- เลือกหัวข้อปัญหา --');
+}
+
+function onTareTypeChange(select){
+  const card = select.closest('.item');
+  const tareInput = card.querySelector('.tareWeight');
+  const selected = TARE_OPTIONS.find(x => x.label === select.value);
+  if(!selected){
+    tareInput.value = '';
+  } else if(selected.weight === null){
+    tareInput.value = '';
+    tareInput.focus();
+  } else {
+    tareInput.value = selected.weight;
+  }
+  calculateCard(select);
+}
+
+function calculateCard(source){
+  const card = source.closest('.item');
+  const gross = parseFloat(card.querySelector('.gross').value) || 0;
+  const tare = parseFloat(card.querySelector('.tareWeight').value) || 0;
+  const net = Math.max(gross - tare, 0);
+  card.querySelector('.net').value = net.toFixed(2);
+  calculateTotals();
+}
+
+function calculateTotals(){
+  let gross = 0, tare = 0, net = 0, count = 0;
+  document.querySelectorAll('.item').forEach(card => {
+    const dept = card.querySelector('.department').value;
+    const issue = card.querySelector('.issue').value;
+    const g = parseFloat(card.querySelector('.gross').value) || 0;
+    const t = parseFloat(card.querySelector('.tareWeight').value) || 0;
+    const n = parseFloat(card.querySelector('.net').value) || 0;
+    if(dept || issue || g || t || n) count++;
+    gross += g; tare += t; net += n;
+  });
+  document.getElementById('sumGross').textContent = gross.toFixed(2);
+  document.getElementById('sumTare').textContent = tare.toFixed(2);
+  document.getElementById('sumNet').textContent = net.toFixed(2);
+  document.getElementById('sumCount').textContent = count;
+}
+
+function previewImage(input){
+  const file = input.files[0];
+  const img = input.parentElement.querySelector('.preview');
+  if(!file){img.style.display='none'; img.src=''; return;}
+  const reader = new FileReader();
+  reader.onload = e => { img.src = e.target.result; img.style.display = 'block'; };
+  reader.readAsDataURL(file);
+}
+
+function collectCurrentCards(){
+  return [...document.querySelectorAll('.item')].map(card => ({
+    shift: card.querySelector('.shift').value,
+    department: card.querySelector('.department').value,
+    machine: card.querySelector('.machine').value,
+    issue: card.querySelector('.issue').value,
+    gross: parseFloat(card.querySelector('.gross').value) || 0,
+    tareType: card.querySelector('.tareType').value,
+    tareWeight: parseFloat(card.querySelector('.tareWeight').value) || 0,
+    net: parseFloat(card.querySelector('.net').value) || 0,
+    remark: card.querySelector('.remark').value.trim(),
+    image: card.querySelector('.preview').src || ''
+  })).filter(x => x.department || x.issue || x.gross || x.tareWeight || x.net || x.remark || x.image);
+}
+
+function buildReport(){
+  const list = document.getElementById('reportList');
+  const cards = collectCurrentCards();
+
+  if(!cards.length){
+    list.innerHTML = '<div class="list-row">ยังไม่มีข้อมูล</div>';
+    calculateTotals();
+    return;
+  }
+
+  const recorderDept = document.getElementById('recorderDept').value || '-';
+  const recorder = document.getElementById('recorder').value || '-';
+  const reportDate = document.getElementById('reportDate').value || '-';
+
+  list.innerHTML = cards.map((x,i) => `
+    <div class="list-row">
+      <strong>${i+1}. ${x.issue || '-'}</strong>
+      <div class="muted">วันที่: ${reportDate} | กะ: ${x.shift || '-'} | หน่วยงาน: ${x.department || '-'} | เครื่อง: ${x.machine || '-'}</div>
+      <div class="muted">ผู้บันทึก: ${recorder} (${recorderDept})</div>
+      <div class="muted">Gross: <b>${x.gross.toFixed(2)}</b> kg | กระบะ: <b>${x.tareType || '-'}</b> (${x.tareWeight.toFixed(2)} kg) | Net: <b>${x.net.toFixed(2)}</b> kg</div>
+      ${x.remark ? `<div class="muted">หมายเหตุ: ${x.remark}</div>` : ''}
+      ${x.image ? `<img class="preview" src="${x.image}" style="display:block;margin-top:10px">` : ''}
+    </div>
+  `).join('');
+  calculateTotals();
+}
+
+function removeItem(btn){
+  btn.closest('.item').remove();
+  renumberItems();
+  buildReport();
+}
+
+function renumberItems(){
+  document.querySelectorAll('.item').forEach((item,i) => item.querySelector('.badge').textContent = i + 1);
+}
+
+function resetForm(){
+  if(confirm('ต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?')) location.reload();
+}
+
+function validateBeforeSubmit(){
+  const reportDate = document.getElementById('reportDate').value;
+  const recorderDept = document.getElementById('recorderDept').value;
+  const recorder = document.getElementById('recorder').value;
+  if(!reportDate){ alert('กรุณาเลือกวันที่'); return false; }
+  if(!recorderDept){ alert('กรุณาเลือกหน่วยงานผู้บันทึก'); return false; }
+  if(!recorder){ alert('กรุณาเลือกชื่อผู้บันทึก'); return false; }
+
+  const cards = collectCurrentCards();
+  if(!cards.length){ alert('กรุณากรอกรายการ Waste อย่างน้อย 1 รายการ'); return false; }
+
+  for(const card of cards){
+    if(!card.shift){ alert('กรุณาเลือกกะในรายการ Waste ที่กรอก'); return false; }
+    if(!card.department){ alert('กรุณาเลือกแผนก/หน่วยงาน'); return false; }
+    if(!card.issue){ alert('กรุณาเลือกหัวข้อปัญหา Waste'); return false; }
+  }
+  return true;
+}
+
+function getStoredRecords(){
+  try{
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  }catch(e){
+    return [];
+  }
+}
+
+function saveStoredRecords(records){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+function submitForm(){
+  if(!validateBeforeSubmit()) return;
+  buildReport();
+
+  const payload = {
+    id: 'W' + Date.now(),
+    date: document.getElementById('reportDate').value,
+    recorderDept: document.getElementById('recorderDept').value,
+    recorder: document.getElementById('recorder').value,
+    items: collectCurrentCards(),
+    createdAt: new Date().toISOString()
+  };
+
+  const records = getStoredRecords();
+  records.unshift(payload);
+  saveStoredRecords(records);
+  renderHistory();
+  renderDashboard();
+  alert('บันทึกข้อมูลเรียบร้อยแล้ว');
+}
+
+function getFilteredRecords(){
+  const records = getStoredRecords();
+  const start = document.getElementById('historyStart').value || '';
+  const end = document.getElementById('historyEnd').value || '';
+  const q = (document.getElementById('historySearch').value || '').trim().toLowerCase();
+
+  return records.filter(doc => {
+    const inDate = (!start || doc.date >= start) && (!end || doc.date <= end);
+    if(!inDate) return false;
+    if(!q) return true;
+    const text = [
+      doc.date, doc.recorderDept, doc.recorder,
+      ...(doc.items || []).flatMap(x => [x.department, x.machine, x.issue, x.shift, x.remark])
+    ].join(' ').toLowerCase();
+    return text.includes(q);
+  });
+}
+
+function clearHistoryFilter(){
+  document.getElementById('historySearch').value = '';
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('historyStart').value = today;
+  document.getElementById('historyEnd').value = today;
+  renderHistory();
+  renderDashboard();
+}
+
+function renderHistory(){
+  const wrap = document.getElementById('historyWrap');
+  const data = getFilteredRecords();
+  document.getElementById('historyCountLabel').textContent = data.length + ' เอกสาร';
+
+  if(!data.length){
+    wrap.innerHTML = '<div class="empty">ไม่พบข้อมูลในช่วงวันที่ที่เลือก</div>';
+    return;
+  }
+
+  wrap.innerHTML = data.map((doc, idx) => {
+    const totalNet = (doc.items || []).reduce((s,x) => s + (x.net || 0), 0);
+    const rows = (doc.items || []).map((x,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${doc.date}<br><span class="pill">${x.shift || '-'}</span></td>
+        <td>${x.department || '-'}<br><span class="muted">${x.machine || '-'}</span></td>
+        <td>${x.issue || '-'}</td>
+        <td>${(x.gross || 0).toFixed(2)}</td>
+        <td>${(x.tareWeight || 0).toFixed(2)}</td>
+        <td><b>${(x.net || 0).toFixed(2)}</b></td>
+      </tr>
+    `).join('');
+    return `
+      <div class="list-row" style="margin-bottom:12px">
+        <strong>${idx+1}. วันที่ ${doc.date} | ผู้บันทึก ${doc.recorder} (${doc.recorderDept})</strong>
+        <div class="muted">จำนวนรายการ ${doc.items.length} | Net รวม <b>${totalNet.toFixed(2)}</b> kg</div>
+        <div style="overflow:auto;margin-top:10px">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>วันที่/กะ</th>
+                <th>หน่วยงาน/เครื่อง</th>
+                <th>หัวข้อปัญหา</th>
+                <th>Gross</th>
+                <th>หักกระบะ</th>
+                <th>Net</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDashboard(){
+  const docs = getFilteredRecords();
+  const allItems = docs.flatMap(x => x.items || []);
+  const gross = allItems.reduce((s,x) => s + (x.gross || 0), 0);
+  const net = allItems.reduce((s,x) => s + (x.net || 0), 0);
+
+  document.getElementById('dashDocs').textContent = docs.length;
+  document.getElementById('dashItems').textContent = allItems.length;
+  document.getElementById('dashGross').textContent = gross.toFixed(2);
+  document.getElementById('dashNet').textContent = net.toFixed(2);
+
+  drawBarChart('deptChart', aggregateMap(allItems, 'department'));
+  drawBarChart('shiftChart', aggregateMap(allItems, 'shift'));
+  drawBarChart('issueChart', aggregateMap(allItems, 'issue', 6));
+  drawBarChart('dateChart', aggregateByDate(docs));
+}
+
+function aggregateMap(items, key, topN=null){
+  const map = {};
+  items.forEach(x => {
+    const k = (x[key] || '-').trim() || '-';
+    map[k] = (map[k] || 0) + (x.net || 0);
+  });
+  let entries = Object.entries(map).sort((a,b) => b[1] - a[1]);
+  if(topN) entries = entries.slice(0, topN);
+  return entries;
+}
+
+function aggregateByDate(docs){
+  const map = {};
+  docs.forEach(doc => {
+    const sum = (doc.items || []).reduce((s,x) => s + (x.net || 0), 0);
+    map[doc.date] = (map[doc.date] || 0) + sum;
+  });
+  return Object.entries(map).sort((a,b) => a[0].localeCompare(b[0]));
+}
+
+function drawBarChart(canvasId, entries){
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  ctx.fillStyle = '#fcfdff';
+  ctx.fillRect(0,0,w,h);
+
+  if(!entries.length){
+    ctx.fillStyle = '#6b7788';
+    ctx.font = '14px Segoe UI';
+    ctx.fillText('ไม่มีข้อมูล', 20, 28);
+    return;
+  }
+
+  const left = 48, right = 16, top = 18, bottom = 60;
+  const innerW = w - left - right;
+  const innerH = h - top - bottom;
+  const maxVal = Math.max(...entries.map(x => x[1]), 1);
+  const barGap = 12;
+  const barW = Math.max((innerW - (entries.length - 1) * barGap) / entries.length, 24);
+
+  ctx.strokeStyle = '#d9e1ec';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(left, top);
+  ctx.lineTo(left, top + innerH);
+  ctx.lineTo(left + innerW, top + innerH);
+  ctx.stroke();
+
+  const gridCount = 4;
+  ctx.font = '12px Segoe UI';
+  ctx.fillStyle = '#7b8798';
+  for(let i=0;i<=gridCount;i++){
+    const y = top + innerH - (innerH / gridCount) * i;
+    ctx.strokeStyle = '#edf2f7';
+    ctx.beginPath();
+    ctx.moveTo(left, y);
+    ctx.lineTo(left + innerW, y);
+    ctx.stroke();
+    const val = (maxVal / gridCount) * i;
+    ctx.fillText(val.toFixed(0), 8, y + 4);
+  }
+
+  entries.forEach((entry, i) => {
+    const [label, value] = entry;
+    const x = left + i * (barW + barGap);
+    const barH = (value / maxVal) * innerH;
+    const y = top + innerH - barH;
+
+    const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+    grad.addColorStop(0, '#2563eb');
+    grad.addColorStop(1, '#60a5fa');
+    ctx.fillStyle = grad;
+    roundRect(ctx, x, y, barW, barH, 10, true, false);
+
+    ctx.fillStyle = '#1f2937';
+    ctx.font = '12px Segoe UI';
+    const shortLabel = label.length > 14 ? label.slice(0, 14) + '…' : label;
+    wrapCanvasText(ctx, shortLabel, x, top + innerH + 16, barW, 13);
+    ctx.fillStyle = '#2563eb';
+    ctx.fillText(value.toFixed(1), x, y - 6);
+  });
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+  const words = text.split(' ');
+  let line = '';
+  let yy = y;
+  for(let n=0; n<words.length; n++){
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if(metrics.width > maxWidth && n > 0){
+      ctx.fillText(line.trim(), x, yy);
+      line = words[n] + ' ';
+      yy += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line.trim(), x, yy);
+}
+
+function roundRect(ctx, x, y, width, height, radius, fill, stroke){
+  if (typeof radius === 'number') {
+    radius = {tl: radius, tr: radius, br: radius, bl: radius};
+  } else {
+    radius = {tl: 0, tr: 0, br: 0, bl: 0, ...radius};
+  }
+  ctx.beginPath();
+  ctx.moveTo(x + radius.tl, y);
+  ctx.lineTo(x + width - radius.tr, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+  ctx.lineTo(x + width, y + height - radius.br);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+  ctx.lineTo(x + radius.bl, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+  ctx.lineTo(x, y + radius.tl);
+  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+  ctx.closePath();
+  if(fill) ctx.fill();
+  if(stroke) ctx.stroke();
+}
+
+initHeader();
+addItem();
+buildReport();
+renderHistory();
+renderDashboard();
+</script>
+</body>
+</html>
