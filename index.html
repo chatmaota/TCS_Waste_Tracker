@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TCS Waste QR Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
   <style>
     :root{
       --bg:#f3f7fb;
@@ -55,6 +56,8 @@
     .pill{display:inline-flex;padding:7px 10px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:800;color:var(--primary)}
     .mini{font-size:12px;color:var(--muted);line-height:1.7}
     .qr-wrap{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:250px}
+    .barcode-wrap{margin-top:14px;width:100%;border-top:1px dashed var(--line);padding-top:14px;text-align:center}
+    #barcodeSvg,#printBarcodeSvg{max-width:100%;background:#fff}
     #qrcode{width:200px;height:200px;display:flex;align-items:center;justify-content:center}
     #qrcode img{max-width:100%;height:auto}
     .summary-box{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fbfdff;margin-top:10px}
@@ -74,20 +77,24 @@
     @media (max-width:900px){.grid,.row-2,.row-3,.sum-grid,.print-grid{grid-template-columns:1fr}.hero h1{font-size:24px}.ticket-top,.print-header{flex-direction:column}}
     @media print{
       body{background:#fff}
-      .hero,#roleCard,#scanCard,.left-panel,#statusBox,.screen-only,.hint{display:none !important}
+      .hero,#roleCard,#scanCard,.left-panel,#statusBox,.screen-only,.hint,.ticket{display:none !important}
       .app{max-width:none;padding:0}
       .grid{display:block}
       .card{box-shadow:none;border:none;padding:0;margin:0}
-      .print-box{border:none;padding:8mm 8mm 4mm 8mm;margin:0}
-      .print-header{margin-bottom:8px}
-      .print-title{font-size:18px}
-      .mini{font-size:11px;line-height:1.4}
-      .print-grid{grid-template-columns:1fr 1fr;gap:6px}
-      .print-item{padding:6px 8px;border:1px solid #d1d5db;border-radius:8px}
-      .print-label{font-size:9px;margin-bottom:2px}
-      .print-value{font-size:12px;line-height:1.25}
-      .net-big{font-size:20px}
-      @page{size:A4 portrait;margin:8mm}
+      #section2Card{padding:0;margin:0;border:none;box-shadow:none}
+      .title,.sub{display:none !important}
+      .print-box{border:none;padding:4mm 5mm 2mm 5mm;margin:0}
+      .print-header{margin-bottom:6px}
+      .print-title{font-size:16px;line-height:1.1}
+      .mini{font-size:10px;line-height:1.25}
+      .print-grid{grid-template-columns:1fr 1fr;gap:4px}
+      .print-item{padding:5px 6px;border:1px solid #d1d5db;border-radius:6px}
+      .print-label{font-size:8px;margin-bottom:1px}
+      .print-value{font-size:10px;line-height:1.15}
+      .net-big{font-size:16px}
+      #printQrBox img{width:72px !important;height:72px !important}
+      #printBarcodeSvg{max-height:34px}
+      @page{size:A4 portrait;margin:5mm}
     }
   </style>
 </head>
@@ -180,7 +187,8 @@
             <div class="field"><label>ผู้ชั่ง / Baler</label><input id="weigher" placeholder="เช่น พนักงาน Baler"></div>
           </div>
 
-          <div class="btns screen-only"><button class="btn btn-success" id="saveWeightBtn" onclick="applyWeight()" disabled>บันทึกน้ำหนัก</button></div>
+          <div class="field"><label>รูปภาพตอนชั่ง / Baler</label><input id="weightImage" type="file" accept="image/*" onchange="previewWeightImage(event)"><img id="weightImagePreview" alt="preview" style="display:none;margin-top:10px;max-width:100%;border:1px solid var(--line);border-radius:14px"></div>
+          <div class="btns screen-only"><button class="btn btn-light" onclick="fillWeightSample()">ข้อมูลตัวอย่างส่วนที่ 3</button><button class="btn btn-success" id="saveWeightBtn" onclick="applyWeight()" disabled>บันทึกน้ำหนัก</button></div>
           <div class="status" id="weightGuide">ส่วนนี้สำหรับ Baler เท่านั้น</div>
 
           <div class="summary-box">
@@ -213,6 +221,10 @@
             <div class="qr-wrap">
               <div id="qrcode"><img id="qrImage" alt="QR Code" style="display:none;max-width:100%;height:auto"><div class="mini" id="qrPlaceholder">ยังไม่สร้าง QR</div></div>
               <div class="mini" style="margin-top:12px;text-align:center;word-break:break-all" id="qrText">-</div>
+              <div class="barcode-wrap">
+                <svg id="barcodeSvg"></svg>
+                <div class="mini" id="barcodeText">-</div>
+              </div>
             </div>
           </div>
 
@@ -222,6 +234,10 @@
               <div id="printQrBox"></div>
             </div>
 
+            <div style="margin:8px 0 10px;text-align:center">
+              <svg id="printBarcodeSvg"></svg>
+              <div class="mini" id="printBarcodeText">-</div>
+            </div>
             <div class="print-grid">
               <div class="print-item"><div class="print-label">Ticket No.</div><div class="print-value" id="pTicket">-</div></div>
               <div class="print-item"><div class="print-label">วันที่ / กะ</div><div class="print-value" id="pDateShift">-</div></div>
@@ -238,10 +254,11 @@
             </div>
 
             <div class="btns screen-only" style="margin-top:14px"><button class="btn btn-light" id="printBtn" onclick="window.print()">Print Preview</button></div>
+            <div class="mini screen-on
           </div>
         </div>
 
-        <div class="card"><div class="hint">แนวใช้งาน: <b>Printing</b> ใช้ส่วนที่ 1 และ 2 พร้อมสั่งพิมพ์ใน 1 หน้า | <b>Baler</b> ใช้ส่วนที่ 3 และดูข้อมูลส่วนบนแบบอ่านอย่างเดียว</div></div>
+        <div class="card"><div class="hint">แนวใช้งาน: <b>Printing</b> ใช้ส่วนที่ 1 และ 2 พร้อมสั่งพิมพ์ใน 1 หน้า | <b>Baler</b> ใช้ส่วนที่ 3 และดูข้อมูลส่วนบนแบบอ่านอย่างเดียว<br>เวอร์ชันนี้เพิ่ม mock save ลง <b>localStorage</b> แล้ว เพื่อให้กดบันทึกแล้วมีข้อมูลค้างในเครื่องทดสอบได้</div></div>
         <div class="status" id="statusBox">รอเลือก section ก่อน</div>
       </div>
     </div>
@@ -259,9 +276,18 @@ const structure = {
 let currentTicket = null;
 let currentQR = null;
 let currentRole = '';
+const STORAGE_KEY = 'tcs_waste_qr_demo_records_v1';
 
 function options(arr, placeholder){ return `<option value="">${placeholder}</option>` + arr.map(v => `<option value="${v}">${v}</option>`).join(''); }
 function setStatus(text){ document.getElementById('statusBox').innerHTML = text; }
+function getStoredRecords(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ return []; } }
+function saveStoredRecords(records){ localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
+function toDataUrl(file, callback){
+  if(!file){ callback(''); return; }
+  const reader = new FileReader();
+  reader.onload = e => callback(e.target.result || '');
+  reader.readAsDataURL(file);
+}
 function setRoleStatus(text){ document.getElementById('roleStatus').innerHTML = text; }
 function buildQrValue(payload){
   const isWeb = location.protocol === 'http:' || location.protocol === 'https:';
@@ -306,7 +332,7 @@ function setSection2Interactive(enabled){
   document.getElementById('printBtn').disabled = !enabled;
 }
 function setWeightMode(enabled){
-  ['gross','tareType','tareWeight','weigher'].forEach(id => {
+  ['gross','tareType','tareWeight','weigher','weightImage'].forEach(id => {
     const el = document.getElementById(id); if(!el) return; el.disabled = !enabled; el.readOnly = !enabled;
   });
   document.getElementById('saveWeightBtn').disabled = !enabled;
@@ -388,6 +414,27 @@ function renderQR(text){
   qrImage.src = qrUrl; qrImage.style.display = 'block'; qrPlaceholder.style.display = 'none';
   document.getElementById('qrText').textContent = text;
   document.getElementById('printQrBox').innerHTML = `<img src="${qrUrl}" alt="QR Code" style="width:96px;height:96px">`;
+
+  const barcodeValue = (currentTicket && currentTicket.ticketId) ? currentTicket.ticketId : '-';
+  document.getElementById('barcodeText').textContent = barcodeValue;
+  document.getElementById('printBarcodeText').textContent = barcodeValue;
+
+  if(window.JsBarcode && barcodeValue !== '-'){
+    JsBarcode('#barcodeSvg', barcodeValue, {
+      format: 'CODE128',
+      width: 2,
+      height: 54,
+      displayValue: false,
+      margin: 4
+    });
+    JsBarcode('#printBarcodeSvg', barcodeValue, {
+      format: 'CODE128',
+      width: 1.6,
+      height: 42,
+      displayValue: false,
+      margin: 2
+    });
+  }
 }
 
 function onTareTypeChange(){
@@ -449,13 +496,36 @@ function applyWeight(){
   if(!currentTicket){ alert('กรุณาเปิดรายการก่อน'); return; }
   const gross = parseFloat(document.getElementById('gross').value) || 0;
   if(gross <= 0){ alert('กรุณากรอกน้ำหนัก Gross'); return; }
-  currentTicket.gross = gross;
-  currentTicket.tareWeight = parseFloat(document.getElementById('tareWeight').value) || 0;
-  currentTicket.net = parseFloat(document.getElementById('net').value) || 0;
-  currentTicket.weigher = document.getElementById('weigher').value.trim();
-  currentTicket.status = 'WEIGHED';
-  updatePreview();
-  setStatus(`บันทึกน้ำหนักแล้ว | Net = ${currentTicket.net.toFixed(2)} kg`);
+
+  const finishSave = (imageBase64) => {
+    currentTicket.gross = gross;
+    currentTicket.tareWeight = parseFloat(document.getElementById('tareWeight').value) || 0;
+    currentTicket.net = parseFloat(document.getElementById('net').value) || 0;
+    currentTicket.weigher = document.getElementById('weigher').value.trim();
+    currentTicket.weightImage = imageBase64 || document.getElementById('weightImagePreview').src || '';
+    currentTicket.status = 'WEIGHED';
+    currentTicket.savedAt = new Date().toISOString();
+
+    const records = getStoredRecords();
+    const idx = records.findIndex(x => x.ticketId === currentTicket.ticketId);
+    if(idx >= 0){
+      records[idx] = { ...records[idx], ...currentTicket };
+    } else {
+      records.unshift({ ...currentTicket });
+    }
+    saveStoredRecords(records);
+
+    updatePreview();
+    setStatus(`บันทึกน้ำหนักแล้ว | Net = ${currentTicket.net.toFixed(2)} kg | Mock saved ในเครื่องแล้ว (${records.length} รายการ)`);
+    alert('บันทึกข้อมูลเรียบร้อยแล้ว (mock save ในเครื่องนี้)');
+  };
+
+  const file = document.getElementById('weightImage').files && document.getElementById('weightImage').files[0];
+  if(file){
+    toDataUrl(file, finishSave);
+  } else {
+    finishSave('');
+  }
 }
 
 function fillSample(){
@@ -469,6 +539,23 @@ function fillSample(){
   document.getElementById('orderItem').value = '4401289901';
   document.getElementById('mo').value = 'MO-250016';
   document.getElementById('remark').value = 'ตัวอย่างรายการสำหรับดู flow เบื้องต้น';
+}
+
+function fillWeightSample(){
+  document.getElementById('gross').value = '125.50';
+  document.getElementById('tareType').value = '75';
+  document.getElementById('tareWeight').value = '75';
+  document.getElementById('weigher').value = 'Baler A';
+  calculateNet();
+}
+
+function previewWeightImage(event){
+  const file = event.target.files && event.target.files[0];
+  const img = document.getElementById('weightImagePreview');
+  if(!file){ img.style.display = 'none'; img.src = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => { img.src = e.target.result; img.style.display = 'block'; };
+  reader.readAsDataURL(file);
 }
 
 function resetAll(){ location.href = location.pathname; }
