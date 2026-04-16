@@ -67,6 +67,7 @@
     .sum-value{font-size:22px;font-weight:900}
     .print-box{margin-top:14px;border:1px solid var(--line);border-radius:22px;padding:14px;background:#fff}
     .print-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+    .print-center{text-align:center}
     .print-title{font-size:20px;font-weight:900}
     .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .print-item{padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}
@@ -78,23 +79,31 @@
     @media print{
       body{background:#fff}
       .hero,#roleCard,#scanCard,.left-panel,#statusBox,.screen-only,.hint,.ticket{display:none !important}
-      .app{max-width:none;padding:0}
-      .grid{display:block}
-      .card{box-shadow:none;border:none;padding:0;margin:0}
-      #section2Card{padding:0;margin:0;border:none;box-shadow:none}
+      .app{max-width:none !important;width:100% !important;padding:0 !important;margin:0 !important}
+      .grid{display:block !important}
+      .card{box-shadow:none !important;border:none !important;padding:0 !important;margin:0 !important}
+      #section2Card{display:block !important;width:100% !important;max-width:none !important;padding:0 !important;margin:0 !important;border:none !important;box-shadow:none !important}
       .title,.sub{display:none !important}
-      .print-box{border:none;padding:4mm 5mm 2mm 5mm;margin:0}
-      .print-header{margin-bottom:6px}
-      .print-title{font-size:16px;line-height:1.1}
-      .mini{font-size:10px;line-height:1.25}
-      .print-grid{grid-template-columns:1fr 1fr;gap:4px}
-      .print-item{padding:5px 6px;border:1px solid #d1d5db;border-radius:6px}
-      .print-label{font-size:8px;margin-bottom:1px}
-      .print-value{font-size:10px;line-height:1.15}
-      .net-big{font-size:16px}
-      #printQrBox img{width:72px !important;height:72px !important}
-      #printBarcodeSvg{max-height:34px}
-      @page{size:A4 portrait;margin:5mm}
+      .print-box{
+        width:100% !important;
+        min-height:0 !important;
+        border:none !important;
+        padding:12mm 12mm 8mm 12mm !important;
+        margin:4mm auto 0 auto !important;
+        transform:none !important;
+      }
+      .print-header{margin-bottom:8px !important;align-items:flex-start !important;justify-content:center !important;text-align:center !important}
+      .print-title{font-size:24px !important;line-height:1.1 !important}
+      .mini{font-size:12px !important;line-height:1.35 !important}
+      .print-grid{grid-template-columns:1fr 1fr !important;gap:6px !important}
+      .print-item{padding:8px 10px !important;border:1px solid #d1d5db !important;border-radius:8px !important}
+      .print-label{font-size:10px !important;margin-bottom:3px !important}
+      .print-value{font-size:13px !important;line-height:1.25 !important}
+      .net-big{font-size:22px !important}
+      #printQrBox img{width:190px !important;height:190px !important;display:block !important;margin:0 auto !important}
+      #printBarcodeSvg{width:100% !important;max-height:44px !important}
+      #printBarcodeText{font-size:11px !important}
+      @page{size:A4 portrait;mar
     }
   </style>
 </head>
@@ -230,8 +239,7 @@
 
           <div class="print-box" id="printArea">
             <div class="print-header">
-              <div><div class="print-title">Waste Tracking Ticket</div><div class="mini">ใบติดกระบะเบื้องต้น</div></div>
-              <div id="printQrBox"></div>
+              <div class="print-center" style="width:100%"><div class="print-title">Waste Tracking Ticket</div><div class="mini">ใบติดกระบะเบื้องต้น</div><div id="printQrBox" style="margin:10px auto 0 auto"></div></div>
             </div>
 
             <div style="margin:8px 0 10px;text-align:center">
@@ -254,7 +262,7 @@
             </div>
 
             <div class="btns screen-only" style="margin-top:14px"><button class="btn btn-light" id="printBtn" onclick="window.print()">Print Preview</button></div>
-            <div class="mini screen-on
+            <div class="mini screen-only" style="margin-top:8px">แนะนำตอนพิมพ์: ปิด Headers and footers และตั้ง Margins เป็น None หรือ Minimum</div>
           </div>
         </div>
 
