@@ -14,108 +14,67 @@
       --primary:#2563eb;
       --primary-2:#1d4ed8;
       --accent:#0f766e;
+      --success:#16a34a;
       --danger:#dc2626;
       --soft:#eff6ff;
       --shadow:0 16px 36px rgba(15,23,42,.08);
       --radius:24px;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter,"Segoe UI",Tahoma,sans-serif;
-      background:linear-gradient(180deg,#f8fbff 0%, #eef3f8 100%);
-      color:var(--text);
-    }
-    .app{max-width:1100px;margin:0 auto;padding:20px}
-    .hero{
-      background:linear-gradient(135deg,#ffffff,#eef5ff);
-      border:1px solid var(--line);
-      border-radius:32px;
-      padding:24px;
-      box-shadow:var(--shadow);
-      margin-bottom:18px;
-    }
+    body{margin:0;font-family:Inter,"Segoe UI",Tahoma,sans-serif;background:linear-gradient(180deg,#f8fbff 0%, #eef3f8 100%);color:var(--text)}
+    .app{max-width:1120px;margin:0 auto;padding:20px}
+    .hero{background:linear-gradient(135deg,#ffffff,#eef5ff);border:1px solid var(--line);border-radius:32px;padding:24px;box-shadow:var(--shadow);margin-bottom:18px}
     .hero h1{margin:0;font-size:30px}
     .hero p{margin:8px 0 0;color:var(--muted);line-height:1.7}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
-      margin-bottom:16px;
-    }
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
     .title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
     .title h2{margin:0;font-size:18px}
     .sub{color:var(--muted);font-size:13px}
-    .step-badge{
-      display:inline-flex;align-items:center;justify-content:center;
-      width:34px;height:34px;border-radius:999px;background:var(--soft);color:var(--primary);font-weight:800
-    }
+    .step-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--soft);color:var(--primary);font-weight:800}
     .field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
     .field label{font-size:13px;font-weight:700;color:#334155}
-    input,select,textarea{
-      width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;
-      padding:12px 13px;font-size:15px;color:var(--text);outline:none;
-    }
+    input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 13px;font-size:15px;color:var(--text);outline:none}
+    input[disabled],select[disabled],textarea[disabled]{background:#f8fafc;color:#64748b;cursor:not-allowed}
     textarea{min-height:92px;resize:vertical}
     .row-2,.row-3{display:grid;gap:12px}
     .row-2{grid-template-columns:repeat(2,1fr)}
     .row-3{grid-template-columns:repeat(3,1fr)}
     .btns{display:flex;flex-wrap:wrap;gap:10px}
-    .btn{
-      border:none;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer;font-size:14px
-    }
+    .btn{border:none;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer;font-size:14px}
     .btn-primary{background:var(--primary);color:#fff}
+    .btn-success{background:var(--success);color:#fff}
     .btn-light{background:#eef4ff;color:#1f3a6d}
-    .btn-success{background:#ecfdf5;color:#166534;border:1px solid #bbf7d0}
     .btn-danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
     .btn:disabled{opacity:.55;cursor:not-allowed}
-    .ticket{
-      background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);
-      border:1px dashed #b6c6da;border-radius:24px;padding:16px;min-height:180px
-    }
+    .status{margin-top:12px;padding:12px 14px;border-radius:16px;background:#f8fbff;border:1px solid #dbeafe;color:#1d4ed8;font-size:13px;line-height:1.7}
+    .hint{font-size:13px;line-height:1.7;color:#49566a;background:#f8fbff;border:1px solid #dbe8ff;padding:12px 14px;border-radius:16px}
+    .ticket{background:linear-gradient(180deg,#ffffff 0%, #f8fbff 100%);border:1px dashed #b6c6da;border-radius:24px;padding:16px;min-height:180px}
     .ticket-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
     .ticket-id{font-size:22px;font-weight:900;color:var(--primary-2)}
     .pill{display:inline-flex;padding:7px 10px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:800;color:var(--primary)}
     .mini{font-size:12px;color:var(--muted);line-height:1.7}
-    .qr-wrap{
-      background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:250px
-    }
+    .qr-wrap{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:250px}
     #qrcode{width:200px;height:200px;display:flex;align-items:center;justify-content:center}
-    #qrcode img, #qrcode canvas{max-width:100%;height:auto}
-    .summary-box{
-      border:1px solid var(--line);border-radius:18px;padding:14px;background:#fbfdff;margin-top:10px
-    }
+    #qrcode img{max-width:100%;height:auto}
+    .summary-box{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fbfdff;margin-top:10px}
     .sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
     .sum-cell{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff}
     .sum-label{font-size:12px;color:var(--muted);margin-bottom:6px}
     .sum-value{font-size:22px;font-weight:900}
-    .status{
-      margin-top:12px;padding:12px 14px;border-radius:16px;background:#f8fbff;border:1px solid #dbeafe;color:#1d4ed8;font-size:13px;line-height:1.7
-    }
-    .print-box{
-      margin-top:14px;border:1px solid var(--line);border-radius:22px;padding:14px;background:#fff
-    }
-    .print-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+    .print-box{margin-top:14px;border:1px solid var(--line);border-radius:22px;padding:14px;background:#fff}
+    .print-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
     .print-title{font-size:20px;font-weight:900}
     .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .print-item{padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}
     .print-label{font-size:10px;color:var(--muted);margin-bottom:3px}
     .print-value{font-size:13px;font-weight:700;word-break:break-word;line-height:1.35}
     .net-big{font-size:24px;font-weight:900;color:#0f766e}
-    .hint{
-      font-size:13px;line-height:1.7;color:#49566a;background:#f8fbff;border:1px solid #dbe8ff;padding:12px 14px;border-radius:16px
-    }
-    @media (max-width:900px){
-      .grid,.row-2,.row-3,.sum-grid,.print-grid{grid-template-columns:1fr}
-      .hero h1{font-size:24px}
-      .ticket-top,.print-header{flex-direction:column}
-    }
+    .focus-card{outline:3px solid #2563eb;outline-offset:4px}
+    @media (max-width:900px){.grid,.row-2,.row-3,.sum-grid,.print-grid{grid-template-columns:1fr}.hero h1{font-size:24px}.ticket-top,.print-header{flex-direction:column}}
     @media print{
       body{background:#fff}
-      .hero,.left-panel,.status,.screen-only,.hint{display:none !important}
+      .hero,#roleCard,#scanCard,.left-panel,#statusBox,.screen-only,.hint{display:none !important}
       .app{max-width:none;padding:0}
       .grid{display:block}
       .card{box-shadow:none;border:none;padding:0;margin:0}
@@ -130,159 +89,115 @@
       .net-big{font-size:20px}
       @page{size:A4 portrait;margin:8mm}
     }
-      .hero,.left-panel,.status,.screen-only{display:none !important}
-      .app{max-width:none;padding:0}
-      .grid{display:block}
-      .card{box-shadow:none;border:none;padding:0;margin:0}
-      .print-box{border:none;padding:0;margin:0}
-    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="hero">
       <h1>TCS Waste QR Demo</h1>
-      <p>ตัวอย่างเบื้องต้นแบบไม่มีหลังบ้าน: ลงหัวข้อ Waste → Generate QR → ลงน้ำหนักชั่งได้ในหน้าเดียวก่อน</p>
+      <p>Mock test แบบเลือก section ก่อนใช้งาน: Printing ใช้ส่วนที่ 1 และ 2, ส่วน Baler ใช้ส่วนที่ 3</p>
+    </div>
+
+    <div class="card" id="roleCard">
+      <div class="title">
+        <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">0</span><h2>เลือก Section ก่อนใช้งาน</h2></div>
+        <div class="sub">Role-based flow</div>
+      </div>
+      <div class="btns screen-only" style="margin-bottom:12px">
+        <button class="btn btn-primary" onclick="selectRole('printing')">Printing</button>
+        <button class="btn btn-success" onclick="selectRole('baler')">Baler</button>
+      </div>
+      <div class="status" id="roleStatus">กรุณาเลือกก่อนว่าใช้งานฝั่ง Printing หรือ Baler</div>
+    </div>
+
+    <div class="card" id="scanCard" style="display:none">
+      <div class="title">
+        <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">B</span><h2>เปิดรายการสำหรับ Baler</h2></div>
+        <div class="sub">ใส่ Ticket ID หรือเปิดจาก QR link</div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label>Ticket ID</label>
+          <input id="ticketLookup" placeholder="เช่น TCS-WS-260416-A-1234">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn btn-success" onclick="openBalerTicket()">เปิดรายการ</button>
+        </div>
+      </div>
+      <div class="hint">สำหรับ mock นี้ ถ้ายังไม่มี backend ระบบจะเปิดรายการจาก Ticket ID เพื่อให้ Baler กรอกน้ำหนักในส่วนที่ 3 ก่อน</div>
     </div>
 
     <div class="grid">
       <div class="left-panel">
-        <div class="card">
+        <div class="card" id="section1Card">
           <div class="title">
-            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">1</span><h2>ลงหัวข้อ Waste</h2></div>
-            <div class="sub">ยังไม่ผูกฐานข้อมูล</div>
+            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">1</span><h2>ส่วนที่ 1: ลงหัวข้อ Waste</h2></div>
+            <div class="sub">ใช้ฝั่ง Printing</div>
           </div>
 
           <div class="row-3">
-            <div class="field">
-              <label>วันที่</label>
-              <input type="date" id="reportDate">
-            </div>
-            <div class="field">
-              <label>กะ</label>
-              <select id="shift">
-                <option value="">-- เลือกกะ --</option>
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>ผู้บันทึก</label>
-              <input id="recorder" placeholder="เช่น สมชาย">
-            </div>
+            <div class="field"><label>วันที่</label><input type="date" id="reportDate"></div>
+            <div class="field"><label>กะ</label><select id="shift"><option value="">-- เลือกกะ --</option><option>A</option><option>B</option><option>C</option></select></div>
+            <div class="field"><label>ผู้บันทึก</label><input id="recorder" placeholder="เช่น สมชาย"></div>
           </div>
 
           <div class="row-2">
-            <div class="field">
-              <label>แผนก/หน่วยงาน</label>
-              <select id="department"></select>
-            </div>
-            <div class="field">
-              <label>เครื่อง/กลุ่มงาน</label>
-              <select id="machine"></select>
-            </div>
+            <div class="field"><label>แผนก/หน่วยงาน</label><select id="department"></select></div>
+            <div class="field"><label>เครื่อง/กลุ่มงาน</label><select id="machine"></select></div>
           </div>
 
-          <div class="field">
-            <label>หัวข้อปัญหา Waste</label>
-            <select id="issue"></select>
-          </div>
+          <div class="field"><label>หัวข้อปัญหา Waste</label><select id="issue"></select></div>
 
           <div class="row-2">
-            <div class="field">
-              <label>Order Item</label>
-              <input id="orderItem" placeholder="เช่น 4401289901">
-            </div>
-            <div class="field">
-              <label>MO / Job</label>
-              <input id="mo" placeholder="เช่น MO-12345">
-            </div>
+            <div class="field"><label>Order Item</label><input id="orderItem" placeholder="เช่น 4401289901"></div>
+            <div class="field"><label>MO / Job</label><input id="mo" placeholder="เช่น MO-12345"></div>
           </div>
 
-          <div class="field">
-            <label>รายละเอียดสินค้า / หมายเหตุ</label>
-            <textarea id="remark" placeholder="รายละเอียดเพิ่มเติมของ Waste รายการนี้"></textarea>
-          </div>
+          <div class="field"><label>รายละเอียดสินค้า / หมายเหตุ</label><textarea id="remark" placeholder="รายละเอียดเพิ่มเติมของ Waste รายการนี้"></textarea></div>
 
           <div class="btns screen-only">
-            <button class="btn btn-primary" onclick="generateQR()">Gen QR</button>
+            <button class="btn btn-primary" id="genQrBtn" onclick="generateQR()">Gen QR</button>
             <button class="btn btn-light" onclick="fillSample()">ใส่ตัวอย่าง</button>
             <button class="btn btn-danger" onclick="resetAll()">ล้างข้อมูล</button>
           </div>
-
-          <div class="status" id="statusBox">ยังไม่ได้สร้าง QR</div>
         </div>
 
         <div class="card" id="weightSection">
           <div class="title">
-            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">3</span><h2>ลงน้ำหนัก</h2></div>
-            <div class="sub">จำลองหน้าที่ Baler</div>
+            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">3</span><h2>ส่วนที่ 3: ลงน้ำหนัก</h2></div>
+            <div class="sub">ใช้ฝั่ง Baler</div>
           </div>
 
           <div class="row-3">
-            <div class="field">
-              <label>น้ำหนัก Gross (kg)</label>
-              <input id="gross" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateNet()">
-            </div>
-            <div class="field">
-              <label>ประเภทกระบะ</label>
-              <select id="tareType" onchange="onTareTypeChange()">
-                <option value="">-- เลือกประเภทกระบะ --</option>
-                <option value="0">ไม่มีกระบะ / ไม่หัก</option>
-                <option value="75">กะบะลูกฟูก - 75 kg</option>
-                <option value="30">กะบะพลาสติก - 30 kg</option>
-                <option value="35">กะบะ Loscam - 35 kg</option>
-                <option value="custom">กำหนดเอง</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>น้ำหนักหักกระบะ (kg)</label>
-              <input id="tareWeight" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateNet()">
-            </div>
+            <div class="field"><label>น้ำหนัก Gross (kg)</label><input id="gross" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateNet()"></div>
+            <div class="field"><label>ประเภทกระบะ</label><select id="tareType" onchange="onTareTypeChange()"><option value="">-- เลือกประเภทกระบะ --</option><option value="0">ไม่มีกระบะ / ไม่หัก</option><option value="75">กะบะลูกฟูก - 75 kg</option><option value="30">กะบะพลาสติก - 30 kg</option><option value="35">กะบะ Loscam - 35 kg</option><option value="custom">กำหนดเอง</option></select></div>
+            <div class="field"><label>น้ำหนักหักกระบะ (kg)</label><input id="tareWeight" type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateNet()"></div>
           </div>
 
           <div class="row-2">
-            <div class="field">
-              <label>น้ำหนักสุทธิ Net (kg)</label>
-              <input id="net" readonly>
-            </div>
-            <div class="field">
-              <label>ผู้ชั่ง / Baler</label>
-              <input id="weigher" placeholder="เช่น พนักงาน Baler">
-            </div>
+            <div class="field"><label>น้ำหนักสุทธิ Net (kg)</label><input id="net" readonly></div>
+            <div class="field"><label>ผู้ชั่ง / Baler</label><input id="weigher" placeholder="เช่น พนักงาน Baler"></div>
           </div>
 
-          <div class="btns screen-only">
-            <button class="btn btn-success" id="saveWeightBtn" onclick="applyWeight()" disabled>บันทึกน้ำหนัก</button>
-          </div>
-
-          <div class="status" id="weightGuide">ส่วนนี้สำหรับ Baler หลังสแกน QR เท่านั้น</div>
+          <div class="btns screen-only"><button class="btn btn-success" id="saveWeightBtn" onclick="applyWeight()" disabled>บันทึกน้ำหนัก</button></div>
+          <div class="status" id="weightGuide">ส่วนนี้สำหรับ Baler เท่านั้น</div>
 
           <div class="summary-box">
             <div class="sum-grid">
-              <div class="sum-cell">
-                <div class="sum-label">Gross</div>
-                <div class="sum-value" id="grossPreview">0.00</div>
-              </div>
-              <div class="sum-cell">
-                <div class="sum-label">Tare</div>
-                <div class="sum-value" id="tarePreview">0.00</div>
-              </div>
-              <div class="sum-cell">
-                <div class="sum-label">Net</div>
-                <div class="sum-value" id="netPreview">0.00</div>
-              </div>
+              <div class="sum-cell"><div class="sum-label">Gross</div><div class="sum-value" id="grossPreview">0.00</div></div>
+              <div class="sum-cell"><div class="sum-label">Tare</div><div class="sum-value" id="tarePreview">0.00</div></div>
+              <div class="sum-cell"><div class="sum-label">Net</div><div class="sum-value" id="netPreview">0.00</div></div>
             </div>
           </div>
         </div>
       </div>
 
       <div>
-        <div class="card">
+        <div class="card" id="section2Card">
           <div class="title">
-            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">2</span><h2>QR / Ticket</h2></div>
-            <div class="sub">Preview ก่อนพิมพ์</div>
+            <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">2</span><h2>ส่วนที่ 2: QR / Ticket</h2></div>
+            <div class="sub">ใช้ฝั่ง Printing</div>
           </div>
 
           <div class="ticket">
@@ -290,23 +205,20 @@
               <div>
                 <div class="mini">Waste Ticket No.</div>
                 <div class="ticket-id" id="ticketId">-</div>
-                <div style="margin-top:8px"><span class="pill" id="ticketStatus">Waiting QR</span></div>
+                <div style="margin-top:8px"><span class="pill" id="ticketStatus">Waiting Role</span></div>
               </div>
               <div class="mini" id="ticketMeta">ยังไม่มีข้อมูล</div>
             </div>
 
             <div class="qr-wrap">
               <div id="qrcode"><img id="qrImage" alt="QR Code" style="display:none;max-width:100%;height:auto"><div class="mini" id="qrPlaceholder">ยังไม่สร้าง QR</div></div>
-              <div class="mini" style="margin-top:12px;text-align:center" id="qrText">-</div>
+              <div class="mini" style="margin-top:12px;text-align:center;word-break:break-all" id="qrText">-</div>
             </div>
           </div>
 
           <div class="print-box" id="printArea">
             <div class="print-header">
-              <div>
-                <div class="print-title">Waste Tracking Ticket</div>
-                <div class="mini">ใบติดกระบะเบื้องต้น</div>
-              </div>
+              <div><div class="print-title">Waste Tracking Ticket</div><div class="mini">ใบติดกระบะเบื้องต้น</div></div>
               <div id="printQrBox"></div>
             </div>
 
@@ -325,116 +237,39 @@
               <div class="print-item" style="grid-column:1/-1"><div class="print-label">Net</div><div class="print-value net-big" id="pNet">-</div></div>
             </div>
 
-            <div class="btns screen-only" style="margin-top:14px">
-              <button class="btn btn-light" onclick="window.print()">Print Preview</button>
-            </div>
+            <div class="btns screen-only" style="margin-top:14px"><button class="btn btn-light" id="printBtn" onclick="window.print()">Print Preview</button></div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="hint">
-            เวอร์ชันนี้เป็น <b>HTML demo แบบไม่มีหลังบ้าน</b><br>
-            - QR ถูกย่อให้เหลือเฉพาะ <b>Ticket ID / ลิงก์สั้น</b> เพื่อให้มือถือสแกนง่ายขึ้น<br>
-            - ถ้าเปิดผ่าน <b>http/https</b> QR จะเป็นลิงก์เปิดกลับมาหน้าเดิมพร้อม Ticket ID<br>
-            - ถ้าเปิดเป็นไฟล์ <b>file://</b> ในคอม มือถือจะสแกนแล้วเปิดไฟล์ในคอมไม่ได้<br>
-            - เหมาะใช้ดู flow ก่อน: <b>ลงหัวข้อ → Gen QR → ลงน้ำหนัก</b>
-          </div>
-        </div>
+        <div class="card"><div class="hint">แนวใช้งาน: <b>Printing</b> ใช้ส่วนที่ 1 และ 2 พร้อมสั่งพิมพ์ใน 1 หน้า | <b>Baler</b> ใช้ส่วนที่ 3 และดูข้อมูลส่วนบนแบบอ่านอย่างเดียว</div></div>
+        <div class="status" id="statusBox">รอเลือก section ก่อน</div>
       </div>
     </div>
   </div>
 
 <script>
 const structure = {
-  "ผ.ผลิตแผ่นลูกฟูก": {
-    machines: ["ผ.ผลิตแผ่นลูกฟูก"],
-    issues: [
-      "1. กระดาษกรีด",
-      "2. แผ่นเสียดีเฟล็คเตอร์",
-      "3. แผ่นเสียท้ายเครื่อง",
-      "4. แผ่นเสียลูกฟูกคืนจากหน่วยงานอื่น",
-      "5. แผ่นเหลือจากจำนวนเผื่อ",
-      "6. สินค้าคืนจาก ผ.ลูกฟูก",
-      "7. Claim SKIC - 7.1 ผ.พิมพ์ / 7.2 ลูกฟูก"
-    ]
-  },
-  "พิมพ์และสำเร็จรูป": {
-    machines: ["F100", "F84FC", "Dongfang", "F240BT", "4FG84Evol", "งานซอย/ไส้", "เครื่องพิมพ์และสรร."],
-    issues: [
-      "8. พิมพ์เสีย F100",
-      "9. พิมพ์เสีย F84FC",
-      "10. พิมพ์เสีย Dongfang",
-      "11. พิมพ์เสีย F240BT",
-      "12. พิมพ์เสีย 4FG84Evol",
-      "13. เศษตัดจากแผ่นดี",
-      "13.1 เศษตัดจากกระดาษแก้งาน Replan",
-      "13.2 เศษตัดจาก S/B วางแผนออกให้ซอย",
-      "14. เศษตัดจากแผ่นเสีย",
-      "14.1 เศษตัดแผ่นเสียที่เกิดจากวางแผนผิด",
-      "14.2 เศษตัดแผ่นเสียที่เกิดจากลูกฟูกออกผิด",
-      "15. กล่องและแผ่นเสียจากสรร."
-    ]
-  },
-  "เครื่องและสรร.": {
-    machines: ["เครื่องและสรร."],
-    issues: [
-      "16. แผ่นเผื่อ",
-      "16.1 S/B เผื่องาน RSC",
-      "16.2 กล่องเผื่องานสำเร็จรูป",
-      "17. สินค้าคืนจากพ.พิมพ์"
-    ]
-  },
-  "ส่วนขาย": {
-    machines: ["ส่วนขาย"],
-    issues: [
-      "18. กล่องและแผ่นเสียจากจัดส่ง",
-      "19. กล่องและแผ่นเสียจากวางแผน",
-      "20. กล่องและแผ่นเสียจากกล่องตัวอย่าง",
-      "21. กล่องและแผ่นเสียจากขาย",
-      "22. สินค้าคืนจากส่วนขาย"
-    ]
-  },
-  "อื่น ๆ": {
-    machines: ["อื่น ๆ"],
-    issues: ["23. กล่องและแผ่นทดสอบจาก QA"]
-  }
+  "ผ.ผลิตแผ่นลูกฟูก": { machines: ["ผ.ผลิตแผ่นลูกฟูก"], issues: ["1. กระดาษกรีด","2. แผ่นเสียดีเฟล็คเตอร์","3. แผ่นเสียท้ายเครื่อง","4. แผ่นเสียลูกฟูกคืนจากหน่วยงานอื่น","5. แผ่นเหลือจากจำนวนเผื่อ","6. สินค้าคืนจาก ผ.ลูกฟูก","7. Claim SKIC - 7.1 ผ.พิมพ์ / 7.2 ลูกฟูก"] },
+  "พิมพ์และสำเร็จรูป": { machines: ["F100","F84FC","Dongfang","F240BT","4FG84Evol","งานซอย/ไส้","เครื่องพิมพ์และสรร."], issues: ["8. พิมพ์เสีย F100","9. พิมพ์เสีย F84FC","10. พิมพ์เสีย Dongfang","11. พิมพ์เสีย F240BT","12. พิมพ์เสีย 4FG84Evol","13. เศษตัดจากแผ่นดี","13.1 เศษตัดจากกระดาษแก้งาน Replan","13.2 เศษตัดจาก S/B วางแผนออกให้ซอย","14. เศษตัดจากแผ่นเสีย","14.1 เศษตัดแผ่นเสียที่เกิดจากวางแผนผิด","14.2 เศษตัดแผ่นเสียที่เกิดจากลูกฟูกออกผิด","15. กล่องและแผ่นเสียจากสรร."] },
+  "เครื่องและสรร.": { machines: ["เครื่องและสรร."], issues: ["16. แผ่นเผื่อ","16.1 S/B เผื่องาน RSC","16.2 กล่องเผื่องานสำเร็จรูป","17. สินค้าคืนจากพ.พิมพ์"] },
+  "ส่วนขาย": { machines: ["ส่วนขาย"], issues: ["18. กล่องและแผ่นเสียจากจัดส่ง","19. กล่องและแผ่นเสียจากวางแผน","20. กล่องและแผ่นเสียจากกล่องตัวอย่าง","21. กล่องและแผ่นเสียจากขาย","22. สินค้าคืนจากส่วนขาย"] },
+  "อื่น ๆ": { machines: ["อื่น ๆ"], issues: ["23. กล่องและแผ่นทดสอบจาก QA"] }
 };
 
 let currentTicket = null;
 let currentQR = null;
+let currentRole = '';
 
-function encodePayload(obj){
-  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
-}
-
-function decodePayload(str){
-  try{
-    return JSON.parse(decodeURIComponent(escape(atob(str))));
-  }catch(e){
-    return null;
-  }
-}
-
+function options(arr, placeholder){ return `<option value="">${placeholder}</option>` + arr.map(v => `<option value="${v}">${v}</option>`).join(''); }
+function setStatus(text){ document.getElementById('statusBox').innerHTML = text; }
+function setRoleStatus(text){ document.getElementById('roleStatus').innerHTML = text; }
 function buildQrValue(payload){
   const isWeb = location.protocol === 'http:' || location.protocol === 'https:';
-  if(isWeb){
-    return `${location.origin}${location.pathname}?ticket=${encodeURIComponent(payload.ticketId || '')}`;
-  }
+  if(isWeb){ return `${location.origin}${location.pathname}?ticket=${encodeURIComponent(payload.ticketId || '')}`; }
   return `TCS-WASTE:${payload.ticketId || ''}`;
 }
-
-function getPayloadFromHash(){
-  return null;
-}
-
-function getTicketFromQuery(){
-  const params = new URLSearchParams(location.search);
-  return params.get('ticket') || '';
-}
-
-function options(arr, placeholder){
-  return `<option value="">${placeholder}</option>` + arr.map(v => `<option value="${v}">${v}</option>`).join('');
-}
+function getTicketFromQuery(){ const params = new URLSearchParams(location.search); return params.get('ticket') || ''; }
+function makeTicketId(data){ const datePart = (data.date || '').replaceAll('-', '').slice(2); const shift = data.shift || 'X'; const rand = Math.floor(Math.random() * 9000) + 1000; return `TCS-WS-${datePart}-${shift}-${rand}`; }
 
 function initForm(){
   document.getElementById('reportDate').value = new Date().toISOString().slice(0,10);
@@ -443,39 +278,9 @@ function initForm(){
   dept.addEventListener('change', onDepartmentChange);
   onDepartmentChange();
   calculateNet();
+  setFormEditable(false);
+  setSection2Interactive(false);
   setWeightMode(false);
-}
-
-function setFormEditable(editable){
-  ['reportDate','shift','recorder','department','machine','issue','orderItem','mo','remark'].forEach(id => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.disabled = !editable;
-    el.readOnly = !editable;
-  });
-}
-
-function setWeightMode(enabled){
-  ['gross','tareType','tareWeight','weigher'].forEach(id => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.disabled = !enabled;
-    el.readOnly = !enabled;
-  });
-  document.getElementById('saveWeightBtn').disabled = !enabled;
-  document.getElementById('weightGuide').innerHTML = enabled
-    ? 'กรุณากรอกน้ำหนักในส่วนนี้ได้เลย ระบบล็อกข้อมูลส่วนบนไว้แล้ว'
-    : 'ส่วนนี้สำหรับ Baler หลังสแกน QR เท่านั้น';
-}
-
-function focusWeightSection(){
-  const box = document.getElementById('weightSection');
-  box.style.outline = '3px solid #2563eb';
-  box.style.outlineOffset = '4px';
-  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setTimeout(() => {
-    document.getElementById('gross').focus();
-  }, 350);
 }
 
 function onDepartmentChange(){
@@ -489,6 +294,49 @@ function onDepartmentChange(){
   }
   machine.innerHTML = options(structure[dept].machines, '-- เลือกเครื่อง/กลุ่มงาน --');
   issue.innerHTML = options(structure[dept].issues, '-- เลือกหัวข้อปัญหา --');
+}
+
+function setFormEditable(editable){
+  ['reportDate','shift','recorder','department','machine','issue','orderItem','mo','remark'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return; el.disabled = !editable; el.readOnly = !editable;
+  });
+}
+function setSection2Interactive(enabled){
+  document.getElementById('genQrBtn').disabled = !enabled;
+  document.getElementById('printBtn').disabled = !enabled;
+}
+function setWeightMode(enabled){
+  ['gross','tareType','tareWeight','weigher'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return; el.disabled = !enabled; el.readOnly = !enabled;
+  });
+  document.getElementById('saveWeightBtn').disabled = !enabled;
+  document.getElementById('weightGuide').innerHTML = enabled ? 'กรุณากรอกน้ำหนักในส่วนนี้ได้เลย' : 'ส่วนนี้สำหรับ Baler เท่านั้น';
+}
+function clearHighlights(){ ['section1Card','section2Card','weightSection'].forEach(id => document.getElementById(id).classList.remove('focus-card')); }
+function highlightCard(id){ clearHighlights(); document.getElementById(id).classList.add('focus-card'); }
+function focusWeightSection(){ highlightCard('weightSection'); document.getElementById('weightSection').scrollIntoView({ behavior:'smooth', block:'start' }); setTimeout(() => document.getElementById('gross').focus(), 300); }
+function focusPrintingSections(){ highlightCard('section1Card'); document.getElementById('section1Card').scrollIntoView({ behavior:'smooth', block:'start' }); }
+
+function selectRole(role){
+  currentRole = role;
+  if(role === 'printing'){
+    document.getElementById('scanCard').style.display = 'none';
+    setFormEditable(true);
+    setSection2Interactive(true);
+    setWeightMode(false);
+    setRoleStatus('โหมด Printing: ใช้งานส่วนที่ 1 และ 2 ได้ | ส่วนที่ 3 ถูกล็อก | พิมพ์ให้อยู่ใน 1 หน้า');
+    setStatus('พร้อมสำหรับ Printing: ลงหัวข้อ แล้ว Gen QR / Print ได้');
+    focusPrintingSections();
+  } else {
+    document.getElementById('scanCard').style.display = 'block';
+    setFormEditable(false);
+    setSection2Interactive(false);
+    setWeightMode(false);
+    setRoleStatus('โหมด Baler: เปิดรายการก่อน แล้วกรอกเฉพาะส่วนที่ 3 | ส่วนที่ 1 และ 2 ดูได้แต่แก้ไม่ได้');
+    setStatus('กรุณาเปิดรายการจาก Ticket ID หรือ QR link ก่อน');
+    highlightCard('weightSection');
+    document.getElementById('ticketLookup').focus();
+  }
 }
 
 function getFormData(){
@@ -519,29 +367,17 @@ function validateForQR(){
   return '';
 }
 
-function makeTicketId(data){
-  const datePart = (data.date || '').replaceAll('-', '').slice(2);
-  const shift = data.shift || 'X';
-  const rand = Math.floor(Math.random() * 9000) + 1000;
-  return `TCS-WS-${datePart}-${shift}-${rand}`;
-}
-
 function generateQR(){
-  const msg = validateForQR();
-  if(msg){
-    alert(msg);
-    return;
-  }
-
+  if(currentRole !== 'printing'){ alert('กรุณาเลือกโหมด Printing ก่อน'); return; }
+  const msg = validateForQR(); if(msg){ alert(msg); return; }
   const data = getFormData();
   const ticketId = makeTicketId(data);
-  currentTicket = { ...data, ticketId, status: 'OPEN', createdAt: new Date().toISOString() };
-  currentQR = buildQrValue({ ticketId: currentTicket.ticketId });
-
+  currentTicket = { ...data, ticketId, status:'OPEN', createdAt:new Date().toISOString() };
+  currentQR = buildQrValue({ ticketId });
   renderQR(currentQR);
   updatePreview();
-  setWeightMode(false);
   setStatus(`สร้าง QR สำเร็จ: ${ticketId}`);
+  highlightCard('section2Card');
 }
 
 function renderQR(text){
@@ -549,26 +385,17 @@ function renderQR(text){
   const qrPlaceholder = document.getElementById('qrPlaceholder');
   const encoded = encodeURIComponent(text);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encoded}`;
-
-  qrImage.src = qrUrl;
-  qrImage.style.display = 'block';
-  qrPlaceholder.style.display = 'none';
-
-  const printQrBox = document.getElementById('printQrBox');
-  printQrBox.innerHTML = `<img src="${qrUrl}" alt="QR Code" style="width:96px;height:96px">`;
+  qrImage.src = qrUrl; qrImage.style.display = 'block'; qrPlaceholder.style.display = 'none';
+  document.getElementById('qrText').textContent = text;
+  document.getElementById('printQrBox').innerHTML = `<img src="${qrUrl}" alt="QR Code" style="width:96px;height:96px">`;
 }
 
 function onTareTypeChange(){
   const v = document.getElementById('tareType').value;
   const tareInput = document.getElementById('tareWeight');
-  if(v === 'custom'){
-    tareInput.value = '';
-    tareInput.focus();
-  } else if(v !== ''){
-    tareInput.value = v;
-  } else {
-    tareInput.value = '';
-  }
+  if(v === 'custom'){ tareInput.value = ''; tareInput.focus(); }
+  else if(v !== ''){ tareInput.value = v; }
+  else { tareInput.value = ''; }
   calculateNet();
 }
 
@@ -580,40 +407,14 @@ function calculateNet(){
   document.getElementById('grossPreview').textContent = gross.toFixed(2);
   document.getElementById('tarePreview').textContent = tare.toFixed(2);
   document.getElementById('netPreview').textContent = net.toFixed(2);
-  if(currentTicket) updatePreview();
-}
-
-function applyWeight(){
-  if(!currentTicket){
-    alert('กรุณา Gen QR ก่อน');
-    return;
-  }
-  const gross = parseFloat(document.getElementById('gross').value) || 0;
-  if(gross <= 0){
-    alert('กรุณากรอกน้ำหนัก Gross');
-    return;
-  }
-  currentTicket.gross = gross;
-  currentTicket.tareWeight = parseFloat(document.getElementById('tareWeight').value) || 0;
-  currentTicket.net = parseFloat(document.getElementById('net').value) || 0;
-  currentTicket.weigher = document.getElementById('weigher').value.trim();
-  currentTicket.status = 'WEIGHED';
-  currentTicket.weighedAt = new Date().toLocaleString('th-TH');
-  updatePreview();
-  setStatus(`บันทึกน้ำหนักแล้ว | Net = ${currentTicket.net.toFixed(2)} kg`);
+  if(currentTicket){ currentTicket.gross = gross; currentTicket.tareWeight = tare; currentTicket.net = net; updatePreview(); }
 }
 
 function updatePreview(){
   const d = currentTicket || getFormData();
   document.getElementById('ticketId').textContent = d.ticketId || '-';
-  document.getElementById('ticketStatus').textContent = d.status || 'Waiting QR';
-  document.getElementById('ticketMeta').innerHTML = [
-    `วันที่: ${d.date || '-'}`,
-    `กะ: ${d.shift || '-'}`,
-    `หน่วยงาน: ${d.department || '-'}`,
-    `เครื่อง: ${d.machine || '-'}`
-  ].join('<br>');
-
+  document.getElementById('ticketStatus').textContent = d.status || 'Waiting Role';
+  document.getElementById('ticketMeta').innerHTML = [`วันที่: ${d.date || '-'}`,`กะ: ${d.shift || '-'}`,`หน่วยงาน: ${d.department || '-'}`,`เครื่อง: ${d.machine || '-'}`].join('<br>');
   document.getElementById('pTicket').textContent = d.ticketId || '-';
   document.getElementById('pDateShift').textContent = `${d.date || '-'} / ${d.shift || '-'}`;
   document.getElementById('pDept').textContent = d.department || '-';
@@ -628,7 +429,37 @@ function updatePreview(){
   document.getElementById('pNet').textContent = `${(d.net || 0).toFixed(2)} kg`;
 }
 
+function openBalerTicket(){
+  if(currentRole !== 'baler'){ alert('กรุณาเลือกโหมด Baler ก่อน'); return; }
+  const ticketId = (document.getElementById('ticketLookup').value || '').trim();
+  if(!ticketId){ alert('กรุณากรอก Ticket ID ก่อน'); return; }
+  currentTicket = { ticketId, status:'OPEN' };
+  currentQR = buildQrValue({ ticketId });
+  renderQR(currentQR);
+  updatePreview();
+  setFormEditable(false);
+  setSection2Interactive(false);
+  setWeightMode(true);
+  focusWeightSection();
+  setStatus(`เปิดรายการสำหรับ Baler แล้ว: ${ticketId}`);
+}
+
+function applyWeight(){
+  if(currentRole !== 'baler'){ alert('ส่วนนี้ใช้ได้เฉพาะ Baler'); return; }
+  if(!currentTicket){ alert('กรุณาเปิดรายการก่อน'); return; }
+  const gross = parseFloat(document.getElementById('gross').value) || 0;
+  if(gross <= 0){ alert('กรุณากรอกน้ำหนัก Gross'); return; }
+  currentTicket.gross = gross;
+  currentTicket.tareWeight = parseFloat(document.getElementById('tareWeight').value) || 0;
+  currentTicket.net = parseFloat(document.getElementById('net').value) || 0;
+  currentTicket.weigher = document.getElementById('weigher').value.trim();
+  currentTicket.status = 'WEIGHED';
+  updatePreview();
+  setStatus(`บันทึกน้ำหนักแล้ว | Net = ${currentTicket.net.toFixed(2)} kg`);
+}
+
 function fillSample(){
+  document.getElementById('reportDate').value = new Date().toISOString().slice(0,10);
   document.getElementById('shift').value = 'A';
   document.getElementById('recorder').value = 'สมชาย';
   document.getElementById('department').value = 'พิมพ์และสำเร็จรูป';
@@ -638,41 +469,26 @@ function fillSample(){
   document.getElementById('orderItem').value = '4401289901';
   document.getElementById('mo').value = 'MO-250016';
   document.getElementById('remark').value = 'ตัวอย่างรายการสำหรับดู flow เบื้องต้น';
-  document.getElementById('gross').value = '125.50';
-  document.getElementById('tareType').value = '75';
-  document.getElementById('tareWeight').value = '75';
-  document.getElementById('weigher').value = 'Baler A';
-  calculateNet();
 }
 
-function resetAll(){
-  location.reload();
-}
-
-function setStatus(text){
-  document.getElementById('statusBox').innerHTML = text;
-}
+function resetAll(){ location.href = location.pathname; }
 
 function loadFromQrLink(){
   const ticketId = getTicketFromQuery();
   if(!ticketId) return;
-
-  currentTicket = {
-    ticketId,
-    status: 'OPEN'
-  };
+  currentRole = 'baler';
+  document.getElementById('scanCard').style.display = 'block';
+  document.getElementById('ticketLookup').value = ticketId;
+  setRoleStatus('โหมด Baler: เปิดจาก QR แล้ว | ส่วนที่ 1 และ 2 ดูได้แต่แก้ไม่ได้ | กรอกส่วนที่ 3 ได้');
+  currentTicket = { ticketId, status:'OPEN' };
   currentQR = buildQrValue({ ticketId });
   renderQR(currentQR);
   updatePreview();
   setFormEditable(false);
+  setSection2Interactive(false);
   setWeightMode(true);
   focusWeightSection();
-
-  if(location.protocol !== 'http:' && location.protocol !== 'https:'){
-    setStatus('QR ตอนนี้ถูกย่อให้สแกนง่ายขึ้นแล้ว แต่ถ้าจะให้มือถือเปิดลิงก์ได้ ต้องเอาไฟล์นี้ไปวางบนเว็บก่อน');
-  } else {
-    setStatus(`เปิดจาก QR แล้ว: ${ticketId}`);
-  }
+  setStatus(`เปิดจาก QR แล้ว: ${ticketId}`);
 }
 
 initForm();
