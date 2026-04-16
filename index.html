@@ -96,15 +96,15 @@
       margin-top:12px;padding:12px 14px;border-radius:16px;background:#f8fbff;border:1px solid #dbeafe;color:#1d4ed8;font-size:13px;line-height:1.7
     }
     .print-box{
-      margin-top:14px;border:1px solid var(--line);border-radius:22px;padding:16px;background:#fff
+      margin-top:14px;border:1px solid var(--line);border-radius:22px;padding:14px;background:#fff
     }
     .print-header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
     .print-title{font-size:20px;font-weight:900}
-    .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .print-item{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fbfdff}
-    .print-label{font-size:11px;color:var(--muted);margin-bottom:4px}
-    .print-value{font-size:14px;font-weight:700;word-break:break-word}
-    .net-big{font-size:28px;font-weight:900;color:#0f766e}
+    .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .print-item{padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}
+    .print-label{font-size:10px;color:var(--muted);margin-bottom:3px}
+    .print-value{font-size:13px;font-weight:700;word-break:break-word;line-height:1.35}
+    .net-big{font-size:24px;font-weight:900;color:#0f766e}
     .hint{
       font-size:13px;line-height:1.7;color:#49566a;background:#f8fbff;border:1px solid #dbe8ff;padding:12px 14px;border-radius:16px
     }
@@ -115,6 +115,21 @@
     }
     @media print{
       body{background:#fff}
+      .hero,.left-panel,.status,.screen-only,.hint{display:none !important}
+      .app{max-width:none;padding:0}
+      .grid{display:block}
+      .card{box-shadow:none;border:none;padding:0;margin:0}
+      .print-box{border:none;padding:8mm 8mm 4mm 8mm;margin:0}
+      .print-header{margin-bottom:8px}
+      .print-title{font-size:18px}
+      .mini{font-size:11px;line-height:1.4}
+      .print-grid{grid-template-columns:1fr 1fr;gap:6px}
+      .print-item{padding:6px 8px;border:1px solid #d1d5db;border-radius:8px}
+      .print-label{font-size:9px;margin-bottom:2px}
+      .print-value{font-size:12px;line-height:1.25}
+      .net-big{font-size:20px}
+      @page{size:A4 portrait;margin:8mm}
+    }
       .hero,.left-panel,.status,.screen-only{display:none !important}
       .app{max-width:none;padding:0}
       .grid{display:block}
@@ -199,7 +214,7 @@
           <div class="status" id="statusBox">ยังไม่ได้สร้าง QR</div>
         </div>
 
-        <div class="card">
+        <div class="card" id="weightSection">
           <div class="title">
             <div style="display:flex;align-items:center;gap:10px"><span class="step-badge">3</span><h2>ลงน้ำหนัก</h2></div>
             <div class="sub">จำลองหน้าที่ Baler</div>
@@ -241,6 +256,8 @@
           <div class="btns screen-only">
             <button class="btn btn-success" id="saveWeightBtn" onclick="applyWeight()" disabled>บันทึกน้ำหนัก</button>
           </div>
+
+          <div class="status" id="weightGuide">ส่วนนี้สำหรับ Baler หลังสแกน QR เท่านั้น</div>
 
           <div class="summary-box">
             <div class="sum-grid">
@@ -317,7 +334,8 @@
         <div class="card">
           <div class="hint">
             เวอร์ชันนี้เป็น <b>HTML demo แบบไม่มีหลังบ้าน</b><br>
-            - ถ้าเปิดผ่าน <b>http/https</b> QR จะเป็นลิงก์เปิดกลับมาหน้าเดิมพร้อมข้อมูลเบื้องต้น<br>
+            - QR ถูกย่อให้เหลือเฉพาะ <b>Ticket ID / ลิงก์สั้น</b> เพื่อให้มือถือสแกนง่ายขึ้น<br>
+            - ถ้าเปิดผ่าน <b>http/https</b> QR จะเป็นลิงก์เปิดกลับมาหน้าเดิมพร้อม Ticket ID<br>
             - ถ้าเปิดเป็นไฟล์ <b>file://</b> ในคอม มือถือจะสแกนแล้วเปิดไฟล์ในคอมไม่ได้<br>
             - เหมาะใช้ดู flow ก่อน: <b>ลงหัวข้อ → Gen QR → ลงน้ำหนัก</b>
           </div>
@@ -398,19 +416,20 @@ function decodePayload(str){
 }
 
 function buildQrValue(payload){
-  const encoded = encodePayload(payload);
   const isWeb = location.protocol === 'http:' || location.protocol === 'https:';
   if(isWeb){
-    return `${location.origin}${location.pathname}#ticket=${encoded}`;
+    return `${location.origin}${location.pathname}?ticket=${encodeURIComponent(payload.ticketId || '')}`;
   }
-  return `TCS-WASTE-DEMO::${encoded}`;
+  return `TCS-WASTE:${payload.ticketId || ''}`;
 }
 
 function getPayloadFromHash(){
-  const hash = location.hash || '';
-  const match = hash.match(/ticket=([^&]+)/);
-  if(!match) return null;
-  return decodePayload(match[1]);
+  return null;
+}
+
+function getTicketFromQuery(){
+  const params = new URLSearchParams(location.search);
+  return params.get('ticket') || '';
 }
 
 function options(arr, placeholder){
@@ -424,6 +443,39 @@ function initForm(){
   dept.addEventListener('change', onDepartmentChange);
   onDepartmentChange();
   calculateNet();
+  setWeightMode(false);
+}
+
+function setFormEditable(editable){
+  ['reportDate','shift','recorder','department','machine','issue','orderItem','mo','remark'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.disabled = !editable;
+    el.readOnly = !editable;
+  });
+}
+
+function setWeightMode(enabled){
+  ['gross','tareType','tareWeight','weigher'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.disabled = !enabled;
+    el.readOnly = !enabled;
+  });
+  document.getElementById('saveWeightBtn').disabled = !enabled;
+  document.getElementById('weightGuide').innerHTML = enabled
+    ? 'กรุณากรอกน้ำหนักในส่วนนี้ได้เลย ระบบล็อกข้อมูลส่วนบนไว้แล้ว'
+    : 'ส่วนนี้สำหรับ Baler หลังสแกน QR เท่านั้น';
+}
+
+function focusWeightSection(){
+  const box = document.getElementById('weightSection');
+  box.style.outline = '3px solid #2563eb';
+  box.style.outlineOffset = '4px';
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => {
+    document.getElementById('gross').focus();
+  }, 350);
 }
 
 function onDepartmentChange(){
@@ -484,21 +536,11 @@ function generateQR(){
   const data = getFormData();
   const ticketId = makeTicketId(data);
   currentTicket = { ...data, ticketId, status: 'OPEN', createdAt: new Date().toISOString() };
-  currentQR = buildQrValue({
-    ticketId: currentTicket.ticketId,
-    date: currentTicket.date,
-    shift: currentTicket.shift,
-    department: currentTicket.department,
-    machine: currentTicket.machine,
-    issue: currentTicket.issue,
-    orderItem: currentTicket.orderItem,
-    mo: currentTicket.mo,
-    remark: currentTicket.remark
-  });
+  currentQR = buildQrValue({ ticketId: currentTicket.ticketId });
 
   renderQR(currentQR);
   updatePreview();
-  document.getElementById('saveWeightBtn').disabled = false;
+  setWeightMode(false);
   setStatus(`สร้าง QR สำเร็จ: ${ticketId}`);
 }
 
@@ -612,32 +654,24 @@ function setStatus(text){
 }
 
 function loadFromQrLink(){
-  const payload = getPayloadFromHash();
-  if(!payload) return;
-
-  document.getElementById('reportDate').value = payload.date || '';
-  document.getElementById('shift').value = payload.shift || '';
-  document.getElementById('department').value = payload.department || '';
-  onDepartmentChange();
-  document.getElementById('machine').value = payload.machine || '';
-  document.getElementById('issue').value = payload.issue || '';
-  document.getElementById('orderItem').value = payload.orderItem || '';
-  document.getElementById('mo').value = payload.mo || '';
-  document.getElementById('remark').value = payload.remark || '';
+  const ticketId = getTicketFromQuery();
+  if(!ticketId) return;
 
   currentTicket = {
-    ...payload,
+    ticketId,
     status: 'OPEN'
   };
-  currentQR = buildQrValue(payload);
+  currentQR = buildQrValue({ ticketId });
   renderQR(currentQR);
   updatePreview();
-  document.getElementById('saveWeightBtn').disabled = false;
+  setFormEditable(false);
+  setWeightMode(true);
+  focusWeightSection();
 
   if(location.protocol !== 'http:' && location.protocol !== 'https:'){
-    setStatus('เปิดข้อมูลจาก QR ได้เฉพาะตอนเอาไฟล์นี้ไปวางบนเว็บ/เซิร์ฟเวอร์ก่อน เพราะมือถือจะเข้า file:// ในคอมไม่ได้');
+    setStatus('QR ตอนนี้ถูกย่อให้สแกนง่ายขึ้นแล้ว แต่ถ้าจะให้มือถือเปิดลิงก์ได้ ต้องเอาไฟล์นี้ไปวางบนเว็บก่อน');
   } else {
-    setStatus(`เปิดรายการจาก QR แล้ว: ${payload.ticketId || '-'}`);
+    setStatus(`เปิดจาก QR แล้ว: ${ticketId}`);
   }
 }
 
